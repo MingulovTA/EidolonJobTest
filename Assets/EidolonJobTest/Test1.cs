@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using EidolonJobTest.Analytics;
 using UnityEngine;
 using Zenject;
@@ -17,8 +19,16 @@ namespace EidolonJobTest
 
         private void Awake()
         {
-            _eventService.TrackEvent(new Event("scope","msg1"));
-            _eventService.TrackEvent(new Event("scope","msg2"));
+            _eventService.TrackEvent(new Event("scope","Awake"));
+        }
+
+        private IEnumerator Start()
+        {
+            _eventService.TrackEvent(new Event("scope","Start"));
+            yield return null;
+            _eventService.TrackEvent(new Event("scope","Hello world"));
+            yield return new WaitForSeconds(2f);
+            _eventService.TrackEvent(new Event("scope","Bye world"));
         }
     }
 }

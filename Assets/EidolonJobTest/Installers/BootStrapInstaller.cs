@@ -1,4 +1,7 @@
 using EidolonJobTest.Analytics;
+using EidolonJobTest.RequestsSender;
+using EidolonJobTest.ServerProvider;
+using UnityEngine;
 using Zenject;
 
 namespace EidolonJobTest.Installers
@@ -7,8 +10,22 @@ namespace EidolonJobTest.Installers
     {
         public override void InstallBindings()
         {
-            Container.Bind<IEventService>()
-                .To<EventService>()
+            Container.BindInterfacesTo<EventService>()
+                .AsSingle()
+                .NonLazy();
+
+            Container.Bind<IServerUriProvider>()
+                .To<ServerUriProvider>()
+                .AsSingle()
+                .NonLazy();
+
+            Container.Bind<IRequestSender>()
+                .To<LogRequestSender>()
+                .AsSingle()
+                .NonLazy();
+
+            Container.Bind<CoroutineRunner>()
+                .FromNewComponentOnNewGameObject()
                 .AsSingle()
                 .NonLazy();
         }
